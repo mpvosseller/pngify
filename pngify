@@ -29,7 +29,7 @@ lastarg="${@: -1}"
 rootdir=$lastarg
 if [ "$rootdir" == "" ]; then
     echo "Usage: $0 <directory>"
-    echo "WARNING: Script may overwrite existing .png images"
+    echo "WARNING: Script will overwrite existing .png images if they exist"
     exit -1;
 fi
 
