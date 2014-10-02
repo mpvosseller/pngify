@@ -28,7 +28,8 @@ lastarg="${@: -1}"
 ## which directory to process
 rootdir=$lastarg
 if [ "$rootdir" == "" ]; then
-    echo "Usage: $0 <directory>"
+    scriptname=$(basename "$0") 
+    echo "Usage: $scriptname <directory>"
     echo "WARNING: Script will overwrite existing .png images if they exist"
     exit -1;
 fi
