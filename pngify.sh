@@ -28,7 +28,9 @@ lastarg="${@: -1}"
 ## which directory to process
 rootdir=$lastarg
 if [ "$rootdir" == "" ]; then
-    rootdir="."
+    echo "Usage: $0 <directory>"
+    echo "WARNING: Script may overwrite existing .png images"
+    exit -1;
 fi
 
 ## find all PDF files under rootdir
