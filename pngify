@@ -3,8 +3,9 @@
 ## Created by Michael Vosseller on 10/01/14.
 ## Copyright (c) 2014 MPV Software, LLC. All rights reserved.
 ##
-## This script quickly converts all PDF images (under a given directory) to 
-## PNGs at @1X, @2X, and @3X scale.
+## This script quickly converts PDF images to PNGs at @1X, @2X, and @3X scale.
+## You can specify the PDF images to convert and/or specify directories and 
+## all PDF files under them will be processed.
 ##
 ## This may be useful for sharing image assets between iOS and Android apps 
 ## where the iOS app uses PDF assets but the Android app uses PNG assets. 
@@ -18,31 +19,23 @@
 ## http://xquartz.macosforge.org/
 ##
 
-# configuration
+
+## Configuration
 scalevalues="1 2 3"
 dpi=72
 
-## command line args
-lastarg="${@: -1}"
 
-## which directory to process
-rootdir=$lastarg
-if [ "$rootdir" == "" ]; then
-    scriptname=$(basename "$0") 
-    echo "Usage: $scriptname <directory>"
-    echo "WARNING: Script will overwrite existing .png images if they exist"
-    exit -1;
-fi
+## Function to convert a PDF to PNGs in each scale
+function convertPdfToPngs {
 
-## find all PDF files under rootdir
-for pdffile in `find $rootdir -name "*.[p,P][d,D][f,F]"`; do
-    
+    pdffile=$1
+
+    echo "Processing: $pdffile"
+
     path=$(dirname ${pdffile})
     filename=$(basename "$pdffile")
     basename="${filename%.*}"
-    
-    echo "Processing: $pdffile"
-    
+
     ## for each scale value 
     for scale in $scalevalues; do
 	
@@ -58,11 +51,25 @@ for pdffile in `find $rootdir -name "*.[p,P][d,D][f,F]"`; do
 	pngfile="$path/$basename$scalestr.png"
 	echo "Creating: $pngfile"
 
-	## convert -density 144 image.pdf image@2x.png
-	convert -density $density $pdffile $pngfile
-
+	## convert -density 144 image.pdf image@2x.png	
+   	convert -density $density $pdffile $pngfile
     done
+}
 
+
+
+## Command line arguments
+filesAndDirs=$@
+if [ "$filesAndDirs" == "" ]; then
+    scriptname=$(basename "$0") 
+    echo "Usage: $scriptname <pdf filenames or directories with pdf files>"
+    echo "WARNING: Script will overwrite existing .png images if they exist"
+    exit -1;
+fi
+
+## Find PDFs and process each
+for pdffile in `find $filesAndDirs -name "*.[p,P][d,D][f,F]"`; do
+    convertPdfToPngs $pdffile
 done
 
 
