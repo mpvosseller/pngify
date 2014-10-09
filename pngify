@@ -18,7 +18,10 @@
 ## The XQuartz installer can be found here:
 ## http://xquartz.macosforge.org/
 ##
-
+##
+## NOTE: if you want to scale a PDF directly to say 100x100 run gs directly
+## gs -o outfile.pdf -sDEVICE=pdfwrite -g1000x1000 -dFIXEDMEDIA -dPDFFitPage -dCompatibilityLevel=1.4 infile.pdf
+##
 
 ## Configuration
 scalevalues="1 2 3"
