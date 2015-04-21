@@ -55,7 +55,7 @@ function convertPdfToPngs {
 	echo "Creating: $pngfile"
 
 	## convert -density 144 image.pdf image@2x.png	
-   	convert -density $density $pdffile $pngfile
+   	convert -background none -density $density $pdffile $pngfile
     done
 }
 
