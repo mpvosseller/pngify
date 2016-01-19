@@ -30,12 +30,11 @@ dpi=72
 
 ## Function to convert a PDF to PNGs in each scale
 function convertPdfToPngs {
-
-    pdffile=$1
+    pdffile="$1"
 
     echo "Processing: $pdffile"
 
-    path=$(dirname ${pdffile})
+    path=$(dirname "${pdffile}")
     filename=$(basename "$pdffile")
     basename="${filename%.*}"
 
@@ -55,7 +54,7 @@ function convertPdfToPngs {
 	echo "Creating: $pngfile"
 
 	## convert -density 144 image.pdf image@2x.png	
-   	convert -background none -density $density $pdffile $pngfile
+   	convert -background none -density $density "$pdffile" "$pngfile"
     done
 }
 
@@ -71,8 +70,8 @@ if [ "$filesAndDirs" == "" ]; then
 fi
 
 ## Find PDFs and process each
-for pdffile in `find $filesAndDirs -name "*.[p,P][d,D][f,F]"`; do
-    convertPdfToPngs $pdffile
+find "$filesAndDirs" -name "*.[p,P][d,D][f,F]" -print0 | while read -d $'\0' file; do
+    convertPdfToPngs "$file"
 done
 
 
